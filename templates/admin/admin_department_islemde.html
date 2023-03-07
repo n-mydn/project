@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<br>
+<h4 class="text-danger">{{dprt.name}} Departmanı</h4>
+<br><br>
+
+{% if feedbacks %}
+
+  {% if liste %}
+      <div class="alert alert-danger">
+        Geri Bildirimi Oluşturulmuş {{sayı}} Talep-Şikayet Bulunmaktadır!
+      </div>
+  {% endif %}
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Tip</th>
+      <th scope="col">Detay</th>
+      <th scope="col">Oluşturulma Tarihi</th>
+      <th scope="col">Talep-Şikayet Öncelik Seviyesi</th>
+      <th scope="col">Durum Belirleme</th>
+      <th scope="col">Geri Bildirim</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for feedback in feedbacks %}
+                <tr>
+                <td>{{feedback.IdFeedbackType}}</td>
+                <td>
+                {% for f_reason in feedback.IdFeedbackReason.all %}
+                    <ul><li>{{f_reason.name}}</li></ul>
+                {% endfor %}
+                </td>
+                <td>{{feedback.FeedbackOpenDate}}</td>
+
+                {% if feedback.IdFeedbackPriorityLevel == None %}
+                    <td class= "text-success">İncele --> Güncelle </td>
+                {% else %}
+                    <td>{{feedback.IdFeedbackPriorityLevel}}</td>
+                {% endif %}
+
+                {% if feedback.IdFeedbackStatus.name == None %}
+                    <td class= "text-success">İncele --> Güncelle </td>
+                {% else %}
+                    <td>{{feedback.IdFeedbackStatus.name}}</td>
+                {% endif %}
+                {% if feedback.feedbackstatushistory_set.all %}
+                  <td class= "text-danger"><b>İncele --> Güncelle</b></td>
+                {% else %}
+                  <td class= "text-success">Geri Bildirim Oluşturulmamış</td>
+                {% endif %}
+                
+                <td><a href="{% url 'feedback:admin_feedback_detail' feedback.id %}" class="text-info"><b>İncele</b></a></td>   
+                </tr>  
+
+        {% endfor %}
+      </tbody>
+    </table><br>
+        <div class="d-flex justify-content-end ">
+            <div class="pagination">
+                <span class="step-links">
+                    {% if feedbacks.has_previous %}
+                        <a class="text-primary" href="?sayfa={{ feeedbacks.previous_page_number }}{% if request.GET.keyword %}&keyword={{ request.GET.keyword }}{% endif %}"><<</a>
+                    {% endif %}
+
+                    <span class="text-info">
+                        {{ feedbacks.number }} / {{ feedbacks.paginator.num_pages }}
+                    </span>
+
+                    {% if feedbacks.has_next %}
+                        <a class="text-primary" href="?sayfa={{ feedbacks.next_page_number }}{% if request.GET.keyword %}&keyword={{ request.GET.keyword }}{% endif %}">>></a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+{% else %}
+    <div class="alert alert-danger">
+     İşlemde Talep-Şikayet Bulunmamaktadır.
+    </div>
+{% endif %}
+
+{% endblock  %}

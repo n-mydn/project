@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h4 class="text-danger">{{department}} Departmanı</h4>
+<br>
+{% if feedbacks %}
+    {% if sayı != 0 %}
+    <div class="alert alert-danger">
+        Geri Bildirim zamanı geçmiş {{sayı}} Talep-Şikayet Bulunmamaktadır!
+    </div><br>
+    {% endif %}
+
+    <div class="d-flex justify-content-end ">
+        <form>
+            <input type="text" name = "keyword" class="input-sm" maxlength="6" placeholder="Öncelik Seviyesine Göre..." value="{{request.GET.keyword}}"> 
+            <button type="submit" class="btn btn-warning">Ara</button>
+        </form>
+    </div><br>
+
+    <table class="table table-bordered">
+    <thead>
+        <tr>
+        <th scope="col">Talep-Şikayet Öncelik Seviyesi</th>
+        <th scope="col">Tip</th>
+        <th scope="col">Detay</th>
+        <th scope="col">Oluşturulma Tarihi</th>
+        <th scope="col">Durum Belirleme</th>
+        <th scope="col">Geri Bildirim</th>
+        <th scope="col">Zaman Aşımı</th>
+        <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for feedback in feedbacks %}
+            <tr>
+                <td>{{feedback.IdFeedbackPriorityLevel}}</td>
+                <td>{{feedback.IdFeedbackType}}</td>
+                <td>
+                    {% for f_reason in feedback.IdFeedbackReason.all %}
+                        <ul><li>{{f_reason.name}}</li></ul>
+                    {% endfor %}
+                </td>
+                <td>{{feedback.FeedbackOpenDate}}</td>
+                <td>{{feedback.IdFeedbackStatus.name}}</td>
+                {% if feedback.feedbackstatushistory_set.all %}
+                    <td><b>Oluşturulmuş</b></td>
+                {% else %}
+                    <td class="text-danger"><b>-</b></td>
+                {% endif %}
+
+                {% if feedback.FeedbackClosedDate > feedback.LastSolveDate %}
+                    <td class="text-danger"><b>Zaman Aşımı</b></td>
+                {% else %}
+                    <td><b>-</b></td>
+                {% endif %}
+                <td><a href="{% url 'feedback:d_admin_feedback_detail' feedback.id %}" class="text-info">İncele</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table><br>
+    <div class="d-flex justify-content-end ">
+        <div class="pagination">
+            <span class="step-links">
+                {% if feedbacks.has_previous %}
+                    <a class="text-primary" href="?sayfa={{ feeedbacks.previous_page_number }}{% if request.GET.keyword %}&keyword={{ request.GET.keyword }}{% endif %}"><<</a>
+                {% endif %}
+
+                <span class="text-info">
+                    {{ feedbacks.number }} / {{ feedbacks.paginator.num_pages }} 
+                </span>
+
+                {% if feedbacks.has_next %}
+                    <a class="text-primary" href="?sayfa={{ feedbacks.next_page_number }}{% if request.GET.keyword %}&keyword={{ request.GET.keyword }}{% endif %}">>></a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+     
+{% else %}
+    {% if request.GET.keyword %}
+        <div class="alert alert-danger">
+            İşlemde Öncelik Seviyesi '{{request.GET.keyword}}' İçeren Talep-Şikayet Bulunmamaktadır!
+        </div>
+    
+    {% else %}
+        <div class="alert alert-danger">
+            İşlemde Talep-Şikayet Bulunmamaktadır.
+        </div>
+    {% endif %}
+
+
+{% endif %}
+
+{% endblock  %}
+

@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <!-- <a class="navbar-brand" href="{% url 'index' %}">Feedback</a> -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+
+    {% if request.user.username == "acil_servis_admin" or request.user.username == "algoloji_admin" or request.user.username == "aile_hekimliği_admin" or request.user.username == "amatem_admin" or request.user.username == "anesteziyoloji_admin" or request.user.username == "beyin_sinir_admin" or request.user.username == "onkoloji_admin" or request.user.username == "çocuk_admin" or  request.user.username == "cildiye_admin" or request.user.username == "diş_admin" or request.user.username == "endodonti_admin" or request.user.username == "endokrin_admin" or request.user.username == "enfeksiyon_admin" or request.user.username == "rehabilitasyon_admin" or request.user.username == "gastroenteroloji_admin" or request.user.username == "gelişimsel_pediatri_admin" or request.user.username == "cerrahi_admin" or request.user.username == "göz_admin" or request.user.username == "hematoloji_admin" or request.user.username == "dahiliye_admin" or request.user.username == "immünoloji_alerji_admin" or request.user.username == "mesleki_hastalıklar_admin" or request.user.username == "kadın_hastalıkları_admin" or request.user.username == "kalp_damar_admin" or request.user.username == "kbb_admin" or request.user.username == "nefroloji_admin" or request.user.username == "nöroloji_admin" or request.user.username == "ordodonti_admin" or request.user.username == "perinatoloji_admin" or request.user.username == "plastik_cerrahi_admin" or request.user.username == "psikiyatri_admin" or request.user.username == "üroloji_admin" or request.user.username == "radyoloji_admin" %}
+      <li class="nav-item active">
+        <a class="nav-link" href="{%  url 'feedback:d_admin_index' %}">Anasayfa</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{%  url 'feedback:feedback' %}">Talep-Şikayet Oluşturma</a>
+      </li>
+    {% elif request.user.username == "admin" %}
+      <li class="nav-item active">
+        <a class="nav-link" href="{%  url 'feedback:admin_all_department' %}">Departmanlar</a>
+      </li>
+
+    {% else %}
+      <li class="nav-item active">
+        <a class="nav-link" href="{%  url 'index' %}">Anasayfa</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="{%  url 'feedback:feedback' %}">Talep-Şikayet Oluşturma</a>
+      </li>
+
+    {% endif %}
+    </ul>
+
+    <ul class="navbar-nav ml-auto">
+    {% if request.user.is_authenticated %}
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'user:logout' %}">Çıkış</a>
+      </li>
+    {% else %}
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'user:login' %}">Giriş</a>
+        </li>
+    {% endif %}
+
+    </ul>
+
+
+  </div>
+</nav>
+
+
+<!-- 
+<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="{% url 'index' %}" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Giriş Yap
+        </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="{% url 'user:login' %}">Ziyaretçi Girişi</a>
+            <a class="dropdown-item" href="{% url 'user:login' %}">Personel Girişi</a>
+            <a class="dropdown-item" href="{% url 'user:login' %}">Departman Girişi</a>
+            <a class="dropdown-item" href="{% url 'user:login' %}">Admin Girişi</a>
+          </div>    
+      </li>-->
+
