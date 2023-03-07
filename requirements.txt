@@ -1,0 +1,6 @@
+Django==4.1.1
+django-ckeditor
+django-cleanup
+django-crispy-forms
+django-phonenumber-field[phonenumberslite]
+django-js-asset==1.0.0
