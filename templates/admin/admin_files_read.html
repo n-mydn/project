@@ -1,0 +1,14 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<h5 class="text-primary">Dosya İçeriği</h5>
+<hr>
+{% for cumle in liste  %}
+    {% if cumle == "\n" %}
+        <br>
+    {% else %}
+        <p>{{cumle}}</p>
+    {% endif %}
+{% endfor %}
+
+{% endblock content %}
